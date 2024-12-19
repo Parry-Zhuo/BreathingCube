@@ -30,22 +30,34 @@ HAL_StatusTypeDef LP5812_WriteRegister(uint16_t reg, uint8_t value) {
 uint8_t LP5812_ReadRegister(uint16_t reg) {
 
     // READ COMMAND:
-    // 1. Start condition + device address + write
-    // 2. Register address + read
+    // 1. Start condition + device address + write bit
+    // 2. Register address + read bit
     // 3. Restart
     // 4. Register write address
     // 5. Read the byte of data.
     // 6. Acknowledge if you want to continue receiving more data.
     // or Not acknowledge if you want to stop receiving data.
     // 7. Finally we have the stop condition.
-    uint8_t i2c_addr = LP5812_BROADCAST_ADDR | ((reg >> 8) & 0x03);
-    uint8_t reg_addr[2] = {(reg >> 8) & 0x03, reg & 0xFF};
-    uint8_t value = 0;
+    HAL_StatusTypeDef status;
 
-    HAL_I2C_Master_Transmit(&hi2c1, i2c_addr, reg_addr[0], 1, 100);
-    HAL_I2C_Master_Receive(&hi2c1, LP5812_BROADCAST_ADDR, &value, 1, 100);
-    
-    return value;
+    // Step 1: Prepare the device address with RA9 and RA8 for Write (W = 0)
+    uint8_t i2c_addr_write = LP5812_BASE_ADDR | ((reg >> 8) & 0x03);  // Combine base address + RA9/RA8
+
+    // Step 2: Prepare the register address (low byte)
+    uint8_t reg_addr = reg & 0xFF;
+
+    // Step 3: Send the Register Address in Write Mode
+    status = HAL_I2C_Master_Transmit(&hi2c1, i2c_addr_write, &reg_addr, 1, 100);
+    if (status != HAL_OK) {
+        return status;  // Return error if transmission fails
+    }
+
+    // Step 4: Prepare the device address with RA9 and RA8 for Read (R = 1)
+    uint8_t i2c_addr_read = i2c_addr_write | 0x01;  // Set Read bit (R = 1)
+
+    // Step 5: Read the Data Byte
+    status = HAL_I2C_Master_Receive(&hi2c1, i2c_addr_read, pValue, 1, 100);
+    return status;  // Return the status of the operation
 }
 
 int LP5812_Init(void) {
