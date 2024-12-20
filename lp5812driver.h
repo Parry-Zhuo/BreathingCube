@@ -1,5 +1,11 @@
 #ifndef LP5812_H
 #define LP5812_H
+/**
+ * @file led_control.h
+ * @brief Header file for controlling LEDs with LP5812.
+ * @author Parry
+ * @date 2024-12-18
+ */
 
 #include "main.h"
 
@@ -198,16 +204,13 @@
 #define LED_EN2_REG            0x21  // Register to enable LEDs 8-11
 
 /**
- * @brief  Initializes the LP5812 LED driver and configures it for direct drive mode.
- * 
- * This function 
- * 1. enable the chip
- * 2. configure LED drive mode
- * 3. set current and PWM values for all LEDs. 
- * 
- * @retval int 
- *         - 1: Initialization successful.
- *         - 0: Initialization failed.
+ * @brief Initializes the LP5812 LED driver.
+ *
+ * This function configures the LP5812 for LED control, including enabling 
+ * the device and setting default configurations.
+ *
+ * @param[in] address I2C address of the LP5812.
+ * @return Status of the initialization (0 = success, non-zero = error).
  */
 int LP5812_Init(void);
 int LP5812_BreathingAnimation(void);

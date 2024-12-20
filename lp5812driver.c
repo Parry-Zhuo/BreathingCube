@@ -1,7 +1,23 @@
 #include "stm32f4xx_hal.h"  // Update based on your STM32 family
 
 extern I2C_HandleTypeDef hi2c1;
-
+/**
+ * @brief Writes a value to a specific register in the LP5812 via I2C.
+ *
+ * The LP5812 operates with a 5-bit device address and a 10-bit register address. 
+ * The device address incorporates the upper two bits (RA9 and RA8) of the register 
+ * address. The remaining 8 bits of the register address, along with the value to 
+ * write, are sent as data in the I2C transaction.
+ *
+ * The steps for a write operation are:
+ * 1. Transmit the device address + RA9/RA8 (MSB of the register address).
+ * 2. Transmit the remaining 8 bits of the register address (low byte).
+ * 3. Transmit the data byte (value to be written).
+ *
+ * @param[in] reg 10-bit register address (significant bits: RA9-RA0).
+ * @param[in] value 8-bit value to be written to the register.
+ * @return HAL_StatusTypeDef Status of the I2C transmission (HAL_OK if successful).
+ */
 HAL_StatusTypeDef LP5812_WriteRegister(uint16_t reg, uint8_t value) {
 
     // WRITE COMMAND
@@ -16,18 +32,27 @@ HAL_StatusTypeDef LP5812_WriteRegister(uint16_t reg, uint8_t value) {
     
     return HAL_I2C_Master_Transmit(&hi2c1, i2c_addr, data, 2, 100);
 }
-
+/**
+ * @brief Reads a single register from the LP5812 device over I2C.
+ *
+ * The LP5812 uses a 5-bit device address and a 10-bit register address for I2C communication. 
+ * This function performs the read operation by sending the register address in write mode, 
+ * followed by reading the data from the register in read mode.
+ *
+ * The steps are:
+ * 1. Start condition + device address + write bit.
+ * 2. Send the register address.
+ * 3. Restart condition.
+ * 4. Device address + read bit.
+ * 5. Receive the byte of data.
+ * 6. Acknowledge or not acknowledge to stop receiving data.
+ * 7. Stop condition.
+ *
+ * @param[in] reg 16-bit register address to be read (10 bits significant).
+ * @return Status of the read operation (HAL_OK if successful, error code otherwise).
+ */
 uint8_t LP5812_ReadRegister(uint16_t reg) {
 
-    // READ COMMAND:
-    // 1. Start condition + device address + write bit
-    // 2. Register address + read bit
-    // 3. Restart
-    // 4. Register write address
-    // 5. Read the byte of data.
-    // 6. Acknowledge if you want to continue receiving more data.
-    // or Not acknowledge if you want to stop receiving data.
-    // 7. Finally we have the stop condition.
     HAL_StatusTypeDef status;
 
     // Step 1: Prepare the device address with RA9 and RA8 for Write (W = 0)
@@ -87,7 +112,7 @@ int LP5812_Init(void) {
     if (status != HAL_OK) return -1;
 
     /** 
-     * Set current limit for specific LED's. LED MAX ALLOWABLE CURRENT = 20mA
+     * Set current limit for specific LED's. LED MAX ALLOWABLE CURRENT according to datasheet= 20mA
      * I_led = I_max(Register Value/255).
      * ~12.75mA = 25.5(127.5/255), write 0x7F
      * This takes place over 0X34 -> 0X3F. 12 LED's
