@@ -10,7 +10,7 @@
 #include "main.h"
 
 
-#define LP5812_BROADCAST_ADDR  0xC0  // LP5812 broadcast I2C address (7-bit shifted to left)
+#define LP5812_BROADCAST_ADDR  0x1B <<3  ///1B<<2 = 6C LP5812 broadcast I2C address (7-bit shifted to left)
 /***************************************************************************//**
  *Register Address
  ******************************************************************************/
@@ -206,7 +206,7 @@
 /**
  * @brief Initializes the LP5812 LED driver.
  *
- * This function configures the LP5812 for LED control, including enabling 
+ * This function configures the LP5812 for LED control, including enabling
  * the device and setting default configurations.
  *
  * @param[in] address I2C address of the LP5812.
