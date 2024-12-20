@@ -4,6 +4,7 @@
 #include "main.h"
 
 
+#define LP5812_BROADCAST_ADDR  0xC0  // LP5812 broadcast I2C address (7-bit shifted to left)
 /***************************************************************************//**
  *Register Address
  ******************************************************************************/
@@ -193,7 +194,8 @@
 #define SCAN_ORDER_OUT2                   0x2
 #define SCAN_ORDER_OUT3                   0x3
 
-
+#define LED_EN1_REG            0x20  // Register to enable LEDs 0-7
+#define LED_EN2_REG            0x21  // Register to enable LEDs 8-11
 
 /**
  * @brief  Initializes the LP5812 LED driver and configures it for direct drive mode.
