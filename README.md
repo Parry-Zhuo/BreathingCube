@@ -18,6 +18,8 @@ if USB is plugged in, turns off switch(from battery to buck convertor) while als
 if USB is NOT plugged in, it turns on switch allowing battery to power circuit.
 
 The output of this switch goes to a Buck-convertor, changing whatever input voltage to 3.3V which powers the entire circuit.
+![image](https://github.com/user-attachments/assets/ca5db52f-fed1-4477-909a-20fd2df3d5e0)
+
 
 ![image](https://github.com/user-attachments/assets/8fb4866a-da87-413b-a81c-4ff51392bc81)
 
@@ -25,5 +27,4 @@ The output of this switch goes to a Buck-convertor, changing whatever input volt
 
 ![image](https://github.com/user-attachments/assets/345f035e-eceb-47a0-839d-9cabec9d8e98)
 
-![image](https://github.com/user-attachments/assets/ca5db52f-fed1-4477-909a-20fd2df3d5e0)
 
