@@ -1,23 +1,47 @@
-This is a project where I created a meditation timer. 
+# Meditation Timer  
 
-Manufactured 4 Layer PCB with standard signal-gnd-pwr-signal layers.
-Communicated with manufacturer to get PCB made.
+This project is a custom-designed **Meditation Timer**, combining hardware and software to create a device meant to help users build and maintain the habit of meditation.  
 
-Starting with hardware, where I created a PCB containing an STM32 as well as basic power circuitry and layout of different buses to communicate with different devices via I2C.
+## Hardware Highlights
+- Designed and manufactured a **4-layer PCB** with a stack-up of Signal-GND-PWR-Signal.
+- Collaborated with a PCB manufacturer to ensure production quality and specifications.
+- Integrated an **STM32 microcontroller** for precise control and functionality.
+- Developed basic **power circuitry** capable of operating up to 40 hours on a 3.3V supply.
+- Designed a layout to support **I²C communication**, interfacing with peripherals such as gyroscopes, and led drivers.
+
+## Software Features
+- Dual operational modes:
+  - **Using Mode**: LED-based breathing animation for meditation guidance to create an ambient environment
+  - **Configuration Mode**: Gyroscope-controlled mode with capacitive touch sensors to configure settings
+    - **Bluetooth connectivity**: Capable of more indepth configuration through BLE, that connects with phone
+    - Programmed addressable **RGBW LEDs** for dynamic visual feedback.
+
+## Design Aesthetics
+- Enclosed the electronics in a **6 cm³ plexiglass box**, offering a sleek design with beautifully diffused lighting effects.
+
+## Skills Demonstrated
+- PCB design and manufacturing.
+- Embedded programming with STM32.
+- Designing for energy efficiency and user experience.
+- 
 ![IMG_2317](https://github.com/user-attachments/assets/3612826b-7e8f-4b12-94fe-f2078112d438)
 
 ![IMG_2303](https://github.com/user-attachments/assets/ed096eaa-f72a-443a-a6af-a6ebdccd8727)
 ![IMG_2304](https://github.com/user-attachments/assets/ef337fea-2e1e-4785-ae30-d657dc8a0cd5)
 
-POWER SUPPLY CIRCUITRY:
+## Power Supply Circuitry  
 
-Starts off with USB-C, where it communicates 5V,3A.
-This goes to the BMS(Battery Management system), 
-if USB is plugged in, turns off switch(from battery to buck convertor) while also charging battery.
+The power supply begins with a **USB-C connector**, which delivers **5V, 3A**. This connects to a **Battery Management System (BMS)** that operates as follows:  
 
-if USB is NOT plugged in, it turns on switch allowing battery to power circuit.
+1. **USB Plugged In**:  
+   - The BMS disables the switch connecting the battery to the buck converter, isolating the battery.  
+   - At the same time, the BMS charges the battery.  
 
-The output of this switch goes to a Buck-convertor, changing whatever input voltage to 3.3V which powers the entire circuit.
+2. **USB Not Plugged In**:  
+   - The BMS enables the switch, allowing the battery to power the circuit.  
+
+The output from the switch is fed into a **buck converter**, which steps down the input voltage to **3.3V** to power the entire circuit.
+
 ![image](https://github.com/user-attachments/assets/ca5db52f-fed1-4477-909a-20fd2df3d5e0)
 
 
