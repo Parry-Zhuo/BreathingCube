@@ -3,9 +3,8 @@
 This project is a custom-designed **Meditation Timer**, combining hardware and software to create a device meant to help users build and maintain the habit of meditation.  
 
 ## Hardware Highlights
-- Designed and manufactured a **4-layer PCB** with a stack-up of Signal-GND-PWR-Signal.
+- Designed and manufactured a **4-layer PCB** with a stack-up of Signal-GND-PWR-Signal with an **STM32 microcontroller**.
 - Collaborated with a PCB manufacturer to ensure production quality and specifications.
-- Integrated an **STM32 microcontroller** for precise control and functionality.
 - Developed basic **power circuitry** capable of operating up to 40 hours on a 3.3V supply.
 - Designed a layout to support **I²C communication**, interfacing with peripherals such as gyroscopes, and led drivers.
 
@@ -19,11 +18,7 @@ This project is a custom-designed **Meditation Timer**, combining hardware and s
 ## Design Aesthetics
 - Enclosed the electronics in a **6 cm³ plexiglass box**, offering a sleek design with beautifully diffused lighting effects.
 
-## Skills Demonstrated
-- PCB design and manufacturing.
-- Embedded programming with STM32.
-- Designing for energy efficiency and user experience.
-- 
+ 
 ![IMG_2317](https://github.com/user-attachments/assets/3612826b-7e8f-4b12-94fe-f2078112d438)
 
 ![IMG_2303](https://github.com/user-attachments/assets/ed096eaa-f72a-443a-a6af-a6ebdccd8727)
