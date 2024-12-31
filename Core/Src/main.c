@@ -18,17 +18,18 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "usb_device.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include  <errno.h>
 #include  <sys/unistd.h> // STDOUT_FILENO, STDERR_FILENO
-#include "ssd1306.h"
-#include "ssd1306_fonts.h"
+//#include "ssd1306.h"
+//#include "ssd1306_fonts.h"
 #include <stdio.h>
-#include <Ws2812bDriver.h>
+
 #include "time_manager.h"
+#include "lp5812driver.h"
+#include "ICM20948Driver.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -67,8 +68,19 @@ DMA_HandleTypeDef hdma_tim16_ch1;
 
 UART_HandleTypeDef huart1;
 
-/* USER CODE BEGIN PV */
+PCD_HandleTypeDef hpcd_USB_FS;
 
+/* USER CODE BEGIN PV */
+int count = 0;
+// icm_20948_data _ICM_data;
+
+
+// uint32_t DestAddress = (uint32_t) &(TIM16->CCR1);
+// //uint32_t TIM16_Ticks = TIM1CLK / (NS * F_CYCLE);
+// pixel leds[_numOfLed];  // Define an array with 8 indices
+// rgb_color rgb = {255,255,255};
+// char displayStr[20];
+// uint8_t _currentMode = MODE_INITIALIZE;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -85,6 +97,7 @@ static void MX_USART1_UART_Init(void);
 static void MX_TIM17_Init(void);
 static void MX_LPTIM1_Init(void);
 static void MX_LPTIM2_Init(void);
+static void MX_USB_PCD_Init(void);
 static void MX_RF_Init(void);
 /* USER CODE BEGIN PFP */
 
@@ -94,12 +107,7 @@ static void MX_RF_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint32_t DestAddress = (uint32_t) &(TIM16->CCR1);
-//uint32_t TIM16_Ticks = TIM1CLK / (NS * F_CYCLE);
-pixel leds[_numOfLed];  // Define an array with 8 indices
-rgb_color rgb = {255,255,255};
-char displayStr[20];
-uint8_t _currentMode = MODE_INITIALIZE;
+
 /* USER CODE END 0 */
 
 /**
@@ -111,17 +119,15 @@ int main(void)
 
   /* USER CODE BEGIN 1 */
 
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
-  /* Config code for STM32_WPAN (HSE Tuning must be done before system clock configuration) */
-  MX_APPE_Config();
 
   /* USER CODE BEGIN Init */
-
 
   /* USER CODE END Init */
 
@@ -144,12 +150,12 @@ int main(void)
   MX_I2C1_Init();
   MX_ADC1_Init();
   MX_RTC_Init();
-  MX_USB_Device_Init();
   MX_TIM16_Init();
   MX_USART1_UART_Init();
   MX_TIM17_Init();
   MX_LPTIM1_Init();
   MX_LPTIM2_Init();
+  MX_USB_PCD_Init();
   MX_RF_Init();
   /* USER CODE BEGIN 2 */
 //	ssd1306_Init();
@@ -159,9 +165,10 @@ int main(void)
 //	ssd1306_UpdateScreen();
 //  HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1); // Start PWM on channel 1, ah we don't even have concise control yet.
 //
-  resetAllLed(leds);
-
-
+  // HAL_Delay(100);
+  // resetAllLed(leds);
+  LP5812_Init();
+  // ICM20948_Init();
 
 	/*Attempt at assigning this very long variable list
 	 *
@@ -178,9 +185,9 @@ int main(void)
 //  }
 //  HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds, _numOfWLedBits);
 //
-	RTC_initialize(10,MODE_INITIALIZE);
+//	RTC_initialize(1,MODE_INITIALIZE);
 
-	setAllLed(leds,rgb,1);
+//	setAllLed(leds,rgb,1);
 
 	//HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 
@@ -196,25 +203,91 @@ int main(void)
 
 	RTC_TimeTypeDef sTime = {0};
 
-	//HAL_GPIO_WritePin(Indication_light_GPIO_Port, Indication_light_Pin, GPIO_PIN_SET);
   /* USER CODE END 2 */
-
-  /* Init code for STM32_WPAN */
-  MX_APPE_Init();
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1)
 	{
     /* USER CODE END WHILE */
-    MX_APPE_Process();
 
     /* USER CODE BEGIN 3 */
-		_currentMode = getMode();
-		RTC_TimeTypeDef currentTime = update();
-		// Format the current time into displayStr
-////		sprintf(displayStr, "%02d:%02d:%02d", currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
-////
+  //  for (int led = 0; led < 12; led++) {
+  //      LP5812_WriteRegister(Manual_PWM_START + led, 0x00);
+  //  }
+  //  HAL_Delay(100);
+  //  // Turn off all LEDs (Reset state)
+
+  //  for (uint16_t pwm = 0; pwm <= 0xFF; pwm += 0x05) {
+  //      LP5812_WriteRegister(Manual_PWM_START + 0x04, pwm); // C0
+  //      LP5812_WriteRegister(Manual_PWM_START + 0x05, pwm); // C1
+  //      LP5812_WriteRegister(Manual_PWM_START + 0x06, pwm); // C2
+  //      HAL_Delay(100); // Delay for smooth effect
+  //  }
+  //  // Gradually decrease brightness (fade out)
+  //  for (int16_t  pwm = 0xFF; pwm >= 0; pwm -= 0x05) {
+	// 	LP5812_WriteRegister(Manual_PWM_START + 0x04, pwm); // C0
+	// 	LP5812_WriteRegister(Manual_PWM_START + 0x05, pwm); // C1
+	// 	LP5812_WriteRegister(Manual_PWM_START + 0x06, pwm); // C2
+	// 	HAL_Delay(100); // Delay for smooth effect
+  //  }
+
+  //  for (uint16_t pwm = 0; pwm <= 0xFF; pwm += 0x05) {
+  //      LP5812_WriteRegister(Manual_PWM_START + 0x07, pwm); // C0
+  //      LP5812_WriteRegister(Manual_PWM_START + 0x08, pwm); // C1
+  //      LP5812_WriteRegister(Manual_PWM_START + 0x09, pwm); // C2
+  //      HAL_Delay(100); // Delay for smooth effect
+  //  }
+//    // Gradually decrease brightness (fade out)
+//    for (int16_t  pwm = 0xFF; pwm >= 0; pwm -= 0x05) {
+//		LP5812_WriteRegister(Manual_PWM_START + 0x07, pwm); // C0
+//		LP5812_WriteRegister(Manual_PWM_START + 0x08, pwm); // C1
+//		LP5812_WriteRegister(Manual_PWM_START + 0x09, pwm); // C2
+//		HAL_Delay(100); // Delay for smooth effect
+//    }
+//
+//    //END BLUE START GREEN
+//    for (uint16_t pwm = 0; pwm <= 0xFF; pwm += 0x10) {
+//        LP5812_WriteRegister(Manual_PWM_START + 0x10, pwm); // C0
+//        LP5812_WriteRegister(Manual_PWM_START + 0x11, pwm); // C1
+//        LP5812_WriteRegister(Manual_PWM_START + 0x12, pwm); // C2
+//        HAL_Delay(100); // Delay for smooth effect
+//    }
+//    // Gradually decrease brightness (fade out)
+//    for (int16_t  pwm = 0xFF; pwm >= 0; pwm -= 0x10) {
+//        LP5812_WriteRegister(Manual_PWM_START + 0x10, pwm); // C0
+//        LP5812_WriteRegister(Manual_PWM_START + 0x11, pwm); // C1
+//        LP5812_WriteRegister(Manual_PWM_START + 0x12, pwm); // C2
+//		HAL_Delay(100); // Delay for smooth effect
+//    }
+//    for (uint16_t pwm = 0; pwm <= 0xFF; pwm += 0x10) {
+//        LP5812_WriteRegister(Manual_PWM_START + 0x13, pwm); // D0
+//        LP5812_WriteRegister(Manual_PWM_START + 0x14, pwm); // D1
+//        LP5812_WriteRegister(Manual_PWM_START + 0x15, pwm); // D2
+//        HAL_Delay(100); // Delay for smooth effect
+//    }
+//    // Gradually decrease brightness (fade out)
+//    for (int16_t  pwm = 0xFF; pwm >= 0; pwm -= 0x10) {
+//        LP5812_WriteRegister(Manual_PWM_START + 0x13, pwm); // D0
+//        LP5812_WriteRegister(Manual_PWM_START + 0x14, pwm); // D1
+//        LP5812_WriteRegister(Manual_PWM_START + 0x15, pwm); // 2
+//		HAL_Delay(100); // Delay for smooth effect
+//    }
+    /*RTC STUFF
+//	_currentMode = getMode();
+//	RTC_TimeTypeDef currentTime = update();
+	*/
+
+    // HAL_Delay(500);
+
+    // ICM20948_ReadAccel(&_ICM_data);
+    // ICM20948_ReadGyro(&_ICM_data);
+    // int i = 0;
+//    count++;
+//	data = 0xff; //test logic analyzer
+//	HAL_I2C_Master_Transmit(&hi2c1, (LP5812_I2C_ADDRESS << 1), &data, 1, 100);
+//		// Format the current time into displayStr
+//		sprintf(displayStr, "%02d:%02d:%02d", currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
 //		sprintf(displayStr,"mode: %d",_currentMode);
 //		ssd1306_SetCursor(5,15);
 //		ssd1306_Fill(Black);
@@ -223,15 +296,13 @@ int main(void)
 
         // Add a delay to see the toggling effect
 	    // Start DMA transfer and wait for completion
-		HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+//		HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+//	    resetAllLed(leds);
+//	    static int currLed = 0;
+//	    currLed  = (currLed + 1)%8;
+//	    setSinglePixels(leds,rgb,currLed);
+//        HAL_Delay(500); // 500 ms delay
 
-
-
-	    resetAllLed(leds);
-	    static int currLed = 0;
-	    currLed  = (currLed + 1)%8;
-	    setSinglePixels(leds,rgb,currLed);
-        HAL_Delay(500); // 500 ms delay
 	}
   /* USER CODE END 3 */
 }
@@ -570,8 +641,8 @@ static void MX_RTC_Init(void)
   */
   hrtc.Instance = RTC;
   hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
-  hrtc.Init.AsynchPrediv = CFG_RTC_ASYNCH_PRESCALER;
-  hrtc.Init.SynchPrediv = CFG_RTC_SYNCH_PRESCALER;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
   hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
   hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
   hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
@@ -587,9 +658,9 @@ static void MX_RTC_Init(void)
 
   /** Initialize RTC and set the Time and Date
   */
-  sTime.Hours = 0x11;
-  sTime.Minutes = 0x22;
-  sTime.Seconds = 0x33;
+  sTime.Hours = 0x0;
+  sTime.Minutes = 0x0;
+  sTime.Seconds = 0x0;
   sTime.SubSeconds = 0x0;
   sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
   sTime.StoreOperation = RTC_STOREOPERATION_RESET;
@@ -610,16 +681,16 @@ static void MX_RTC_Init(void)
   */
   sAlarm.AlarmTime.Hours = 0x0;
   sAlarm.AlarmTime.Minutes = 0x0;
-  sAlarm.AlarmTime.Seconds = 0x0;
+  sAlarm.AlarmTime.Seconds = 0x1;
   sAlarm.AlarmTime.SubSeconds = 0x0;
   sAlarm.AlarmTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
   sAlarm.AlarmTime.StoreOperation = RTC_STOREOPERATION_RESET;
-  sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
+  sAlarm.AlarmMask = RTC_ALARMMASK_SECONDS;
   sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDMASK_ALL;
   sAlarm.AlarmDateWeekDaySel = RTC_ALARMDATEWEEKDAYSEL_DATE;
   sAlarm.AlarmDateWeekDay = 0x1;
   sAlarm.Alarm = RTC_ALARM_A;
-  if (HAL_RTC_SetAlarm(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK)
+  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, RTC_FORMAT_BCD) != HAL_OK)
   {
     Error_Handler();
   }
@@ -773,6 +844,39 @@ static void MX_USART1_UART_Init(void)
 }
 
 /**
+  * @brief USB Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USB_PCD_Init(void)
+{
+
+  /* USER CODE BEGIN USB_Init 0 */
+
+  /* USER CODE END USB_Init 0 */
+
+  /* USER CODE BEGIN USB_Init 1 */
+
+  /* USER CODE END USB_Init 1 */
+  hpcd_USB_FS.Instance = USB;
+  hpcd_USB_FS.Init.dev_endpoints = 8;
+  hpcd_USB_FS.Init.speed = PCD_SPEED_FULL;
+  hpcd_USB_FS.Init.phy_itface = PCD_PHY_EMBEDDED;
+  hpcd_USB_FS.Init.Sof_enable = DISABLE;
+  hpcd_USB_FS.Init.low_power_enable = DISABLE;
+  hpcd_USB_FS.Init.lpm_enable = DISABLE;
+  hpcd_USB_FS.Init.battery_charging_enable = DISABLE;
+  if (HAL_PCD_Init(&hpcd_USB_FS) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USB_Init 2 */
+
+  /* USER CODE END USB_Init 2 */
+
+}
+
+/**
   * Enable DMA controller clock
   */
 static void MX_DMA_Init(void)
@@ -871,50 +975,52 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	//Start/stop button
-	if(GPIO_Pin == BUTTON_1_Pin){
+// 	if(GPIO_Pin == BUTTON_1_Pin){
 
-		//if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET) {
-//		HAL_GPIO_TogglePin(Indication_light_GPIO_Port, Indication_light_Pin);
-//		HAL_GPIO_WritePin(Indication_light_GPIO_Port, Indication_light_Pin,GPIO_PIN_SET);
-		//}
-		__HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_0);
-		startstop();
+// 		//if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET) {
+// //		HAL_GPIO_TogglePin(Indication_light_GPIO_Port, Indication_light_Pin);
+// //		HAL_GPIO_WritePin(Indication_light_GPIO_Port, Indication_light_Pin,GPIO_PIN_SET);
+// 		//}
+// 		__HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_0);
+// 		startstop();
 
-	//Increment minutes button
-	}else if(GPIO_Pin == BUTTON_2_Pin){
-		/*PA6 - addressable LED Timer 16 CH1*/
+// 	//Increment minutes button
+// 	}else if(GPIO_Pin == BUTTON_2_Pin){
+// 		/*PA6 - addressable LED Timer 16 CH1*/
 
-		setAllLed(leds,rgb,1);
-        if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
-        {
-            Error_Handler();
-        }
-    //Increment seconds button
-	}else if(GPIO_Pin == BUTTON_3_Pin){
-		resetAllLed(leds);
-        if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
-        {
-            Error_Handler();
-        }
-    //Debug button
-	}else if(GPIO_Pin == BUTTON_4_Pin){//increments LED.
-		static int _currLedNum = 0;
-		//resetAllLed(leds);
-		setSinglePixels(leds,rgb,_currLedNum);
-		_currLedNum = (_currLedNum + 1)%_numOfLed;
-        if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
-        {
-            Error_Handler();
-        }
-	}else{
-		HAL_GPIO_WritePin(Indication_light_GPIO_Port, Indication_light_Pin,GPIO_PIN_RESET);
+// 		setAllLed(leds,rgb,1);
+//         if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
+//         {
+//             Error_Handler();
+//         }
+//     //Increment seconds button
+// 	}else if(GPIO_Pin == BUTTON_3_Pin){
+// 		resetAllLed(leds);
+//         if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
+//         {
+//             Error_Handler();
+//         }
+//     //Debug button
+// 	}else if(GPIO_Pin == BUTTON_4_Pin){//increments LED.
+// 		static int _currLedNum = 0;
+// 		//resetAllLed(leds);
+// 		setSinglePixels(leds,rgb,_currLedNum);
+// 		_currLedNum = (_currLedNum + 1)%_numOfLed;
+//         if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
+//         {
+//             Error_Handler();
+//         }
+// 	}else{
+// 		HAL_GPIO_WritePin(Indication_light_GPIO_Port, Indication_light_Pin,GPIO_PIN_RESET);
 
-	}
+// 	}
 }
 
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
-	HAL_GPIO_TogglePin(SPEAKER_GPIO_Port, SPEAKER_Pin);
-	HAL_Delay(1000);
+//	HAL_GPIO_TogglePin(Indication_light_GPIO_Port, Indication_light_Pin);
+
+//Here we actually focus on the LED driver.
+//	HAL_Delay(500); // 500 ms delay
 //	RTC_AlarmTypeDef sAlarm;
 //	HAL_RTC_GetAlarm(hrtc,&sAlarm,RTC_ALARM_A,FORMAT_BIN);
 //	if(sAlarm.AlarmTime.Seconds>58) {
