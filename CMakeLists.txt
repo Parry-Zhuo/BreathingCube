@@ -61,6 +61,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
     ${CMAKE_SOURCE_DIR}/Core/Inc
+    # ${CMAKE_SOURCE_DIR}/Core/Inc/ICM20948Driver.h
+    # ${CMAKE_SOURCE_DIR}/Core/Inc/lp5812driver.h
 )
 
 # Add project symbols (macros)

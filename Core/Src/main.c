@@ -167,10 +167,31 @@ int main(void)
 //
   // HAL_Delay(100);
   // resetAllLed(leds);
-  LP5812_Init();
-  // ICM20948_Init();
+  // LP5812_Init_Manual();
 
-	/*Attempt at assigning this very long variable list
+  //initializeAuto
+//   LP5812_Init_Autonomous();
+//   AEU_SET_AllWhite();
+//   HAL_StatusTypeDef status;
+//     status = LP5812_WriteRegister(Update_CMD_REG,Update_CMD_Value);
+//   if (status != HAL_OK) {
+//     // Handle error
+//   }
+//   status = LP5812_WriteRegister(Start_CMD_REG,Start_CMD_Value);
+//   if (status != HAL_OK) {
+//     // Handle error
+// }
+
+  // ICM20948_Init();
+ 
+  // LP5812_DetectFault();
+
+  // LP5812_ClearFaults();
+
+  // LP5812_DetectFault();
+  // HAL_GPIO_WritePin(GPIOA, Indication_light_Pin, GPIO_PIN_RESET);
+
+  /*Attempt at assigning this very long variable list
 	 *
 	 *
     timeManager._alarmTime = *alarmTime; // wwhat is this variable.a
@@ -196,12 +217,14 @@ int main(void)
 	 *
 	 *
 	 * */
+// Configure LED0 (A0)
 
 
 //    }
 	 // Make sure the buffer is large enough
 
 	RTC_TimeTypeDef sTime = {0};
+  
 
   /* USER CODE END 2 */
 
@@ -212,67 +235,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  //  for (int led = 0; led < 12; led++) {
-  //      LP5812_WriteRegister(Manual_PWM_START + led, 0x00);
-  //  }
-  //  HAL_Delay(100);
-  //  // Turn off all LEDs (Reset state)
+  // fadeAlternatingColours_manual();
 
-  //  for (uint16_t pwm = 0; pwm <= 0xFF; pwm += 0x05) {
-  //      LP5812_WriteRegister(Manual_PWM_START + 0x04, pwm); // C0
-  //      LP5812_WriteRegister(Manual_PWM_START + 0x05, pwm); // C1
-  //      LP5812_WriteRegister(Manual_PWM_START + 0x06, pwm); // C2
-  //      HAL_Delay(100); // Delay for smooth effect
-  //  }
-  //  // Gradually decrease brightness (fade out)
-  //  for (int16_t  pwm = 0xFF; pwm >= 0; pwm -= 0x05) {
-	// 	LP5812_WriteRegister(Manual_PWM_START + 0x04, pwm); // C0
-	// 	LP5812_WriteRegister(Manual_PWM_START + 0x05, pwm); // C1
-	// 	LP5812_WriteRegister(Manual_PWM_START + 0x06, pwm); // C2
-	// 	HAL_Delay(100); // Delay for smooth effect
-  //  }
-
-  //  for (uint16_t pwm = 0; pwm <= 0xFF; pwm += 0x05) {
-  //      LP5812_WriteRegister(Manual_PWM_START + 0x07, pwm); // C0
-  //      LP5812_WriteRegister(Manual_PWM_START + 0x08, pwm); // C1
-  //      LP5812_WriteRegister(Manual_PWM_START + 0x09, pwm); // C2
-  //      HAL_Delay(100); // Delay for smooth effect
-  //  }
-//    // Gradually decrease brightness (fade out)
-//    for (int16_t  pwm = 0xFF; pwm >= 0; pwm -= 0x05) {
-//		LP5812_WriteRegister(Manual_PWM_START + 0x07, pwm); // C0
-//		LP5812_WriteRegister(Manual_PWM_START + 0x08, pwm); // C1
-//		LP5812_WriteRegister(Manual_PWM_START + 0x09, pwm); // C2
-//		HAL_Delay(100); // Delay for smooth effect
-//    }
-//
-//    //END BLUE START GREEN
-//    for (uint16_t pwm = 0; pwm <= 0xFF; pwm += 0x10) {
-//        LP5812_WriteRegister(Manual_PWM_START + 0x10, pwm); // C0
-//        LP5812_WriteRegister(Manual_PWM_START + 0x11, pwm); // C1
-//        LP5812_WriteRegister(Manual_PWM_START + 0x12, pwm); // C2
-//        HAL_Delay(100); // Delay for smooth effect
-//    }
-//    // Gradually decrease brightness (fade out)
-//    for (int16_t  pwm = 0xFF; pwm >= 0; pwm -= 0x10) {
-//        LP5812_WriteRegister(Manual_PWM_START + 0x10, pwm); // C0
-//        LP5812_WriteRegister(Manual_PWM_START + 0x11, pwm); // C1
-//        LP5812_WriteRegister(Manual_PWM_START + 0x12, pwm); // C2
-//		HAL_Delay(100); // Delay for smooth effect
-//    }
-//    for (uint16_t pwm = 0; pwm <= 0xFF; pwm += 0x10) {
-//        LP5812_WriteRegister(Manual_PWM_START + 0x13, pwm); // D0
-//        LP5812_WriteRegister(Manual_PWM_START + 0x14, pwm); // D1
-//        LP5812_WriteRegister(Manual_PWM_START + 0x15, pwm); // D2
-//        HAL_Delay(100); // Delay for smooth effect
-//    }
-//    // Gradually decrease brightness (fade out)
-//    for (int16_t  pwm = 0xFF; pwm >= 0; pwm -= 0x10) {
-//        LP5812_WriteRegister(Manual_PWM_START + 0x13, pwm); // D0
-//        LP5812_WriteRegister(Manual_PWM_START + 0x14, pwm); // D1
-//        LP5812_WriteRegister(Manual_PWM_START + 0x15, pwm); // 2
-//		HAL_Delay(100); // Delay for smooth effect
-//    }
     /*RTC STUFF
 //	_currentMode = getMode();
 //	RTC_TimeTypeDef currentTime = update();

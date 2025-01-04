@@ -71,32 +71,33 @@
 #define LED_AEU_GAP                         0x01A
 #define AEU_GAP                             0x008
 
-#define LED0_Pause_Time                     0x080
-#define LED0_Playback_Time                  0x081
-#define LED0_AEU1_PWM1                      0x082
-#define LED0_AEU1_PWM2                      0x083
-#define LED0_AEU1_PWM3                      0x084
-#define LED0_AEU1_PWM4                      0x085
-#define LED0_AEU1_PWM5                      0x086
-#define LED0_AEU1_SlOPE_TIME1               0x087
-#define LED0_AEU1_SlOPE_TIME2               0x088
-#define LED0_AEU1_PT1                       0x089
-#define LED0_AEU2_PWM1                      0x08A
-#define LED0_AEU2_PWM2                      0x08B
-#define LED0_AEU2_PWM3                      0x08C
-#define LED0_AEU2_PWM4                      0x08D
-#define LED0_AEU2_PWM5                      0x08E
-#define LED0_AEU2_SlOPE_TIME1               0x08F
-#define LED0_AEU2_SlOPE_TIME2               0x090
-#define LED0_AEU2_PT1                       0x091
-#define LED0_AEU3_PWM1                      0x092
-#define LED0_AEU3_PWM2                      0x093
-#define LED0_AEU3_PWM3                      0x094
-#define LED0_AEU3_PWM4                      0x095
-#define LED0_AEU3_PWM5                      0x096
-#define LED0_AEU3_SlOPE_TIME1               0x097
-#define LED0_AEU3_SlOPE_TIME2               0x098
-#define LED0_AEU3_PT1                       0x099
+#define LEDA0_Pause_Time                     0x0E8
+#define LEDA0_Playback_Time                  0x0E9
+#define LEDA0_AEU1_PWM1                      0x0EA
+#define LEDA0_AEU1_PWM2                      0x0EB
+#define LEDA0_AEU1_PWM3                      0x0EC
+#define LEDA0_AEU1_PWM4                      0x0ED
+#define LEDA0_AEU1_PWM5                      0x0EE
+#define LEDA0_AEU1_SLOPE_TIME12               0x0EF
+#define LEDA0_AEU1_SLOPE_TIME34               0x0F0
+#define LEDA0_AEU1_PT1                       0x0F1
+#define LEDA0_AEU2_PWM1                      0x0F2
+#define LEDA0_AEU2_PWM2                      0x0F3
+#define LEDA0_AEU2_PWM3                      0x0F4
+#define LEDA0_AEU2_PWM4                      0x0F5
+#define LEDA0_AEU2_PWM5                      0x0F6
+#define LEDA0_AEU2_SLOPE_TIME1               0x0F7
+#define LEDA0_AEU2_SLOPE_TIME2               0x0F8
+#define LEDA0_AEU2_PT1                       0x0F9
+#define LEDA0_AEU3_PWM1                      0x0FA
+#define LEDA0_AEU3_PWM2                      0x0FB
+#define LEDA0_AEU3_PWM3                      0x0FC
+#define LEDA0_AEU3_PWM4                      0x0FD
+#define LEDA0_AEU3_PWM5                      0x0FE
+#define LEDA0_AEU3_SLOPE_TIME1               0x0FF
+#define LEDA0_AEU3_SLOPE_TIME2               0x100
+#define LEDA0_AEU3_PT1                       0x101
+
 
 /* FLAG Register Address*/
 #define TSD_CONFIG_STATUS                   0x300
@@ -203,6 +204,11 @@
 #define LED_EN1_REG            0x20  // Register to enable LEDs 0-7
 #define LED_EN2_REG            0x21  // Register to enable LEDs 8-11
 
+
+
+HAL_StatusTypeDef LP5812_WriteRegister(uint16_t reg, uint8_t value);
+HAL_StatusTypeDef LP5812_BurstWrite(uint16_t startReg, uint8_t *values, uint16_t dataSize) ;
+HAL_StatusTypeDef LP5812_ReadRegister(uint16_t reg, uint8_t *pValue);
 /**
  * @brief Initializes the LP5812 LED driver.
  *
@@ -212,10 +218,29 @@
  * @param[in] address I2C address of the LP5812.
  * @return Status of the initialization (0 = success, non-zero = error).
  */
-int LP5812_Init(void);
+int LP5812_Init_Manual(void);
+int LP5812_Init_Autonomous(void);
 int LP5812_BreathingAnimation(void);
 int LP5812_stopAnimation(void);
 int LP5812_manualControl(void);
-
+HAL_StatusTypeDef LP5812_DetectFault(void);
+HAL_StatusTypeDef LP5812_ClearFaults(void);
+void FadeLEDs_Manual(uint16_t startRegister, uint16_t resolution, int delayTime);
+void fadeAlternatingColours_manual();
+HAL_StatusTypeDef AEU_SET(uint8_t LED_NUM,
+             //uint8_t AEU_NUM, //AEU1/2/3
+             uint8_t PWM1,//0-255
+             uint8_t PWM2,
+             uint8_t PWM3,
+             uint8_t PWM4,
+             uint8_t PWM5,
+             uint8_t T1,//0-15 from 0-8s
+             uint8_t T2,
+             uint8_t T3,
+             uint8_t T4,
+             uint8_t PT//playback time 0h = 0 time, 1h = 1 time, 2h = 2 times, 3h = infinite times
+             );
+HAL_StatusTypeDef AEU_SET_AllWhite();
+HAL_StatusTypeDef LP5812_AnimationCommand(uint8_t command);
 
 #endif // LP5812_H
