@@ -1,17 +1,44 @@
-#settings
+#-----------------------------------------
+# KiCad: Temporary/backup/autogen files
+#-----------------------------------------
+*.kicad_prl
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*-autosave.kicad_sch
+*-autosave.kicad_pcb
+*.net
+*.xml
+*.bck
+*.bak
+
+#-----------------------------------------
+# Output files (Gerbers, drills, etc.)
+#-----------------------------------------
+*.gbr
+*.gbl
+*.gbp
+*.gbs
+*.gml
+*.gm1
+*.gtl
+*.gts
+*.gto
+*.gbo
+*.drl
+*.drd
+*.dri
+*.fab
+
+#-----------------------------------------
+# Build/Debug/Release artifacts
+#-----------------------------------------
+# Generic settings
 .settings/
-
-#metadata
 .metadata/
-
-#Debug
 Debug/
-debug/
 Release/
+debug/
 release
-
-# Prerequisites
-*.d
 
 # Object files
 *.o
@@ -30,7 +57,7 @@ release
 *.la
 *.lo
 
-# Shared objects (inc. Windows DLLs)
+# Shared objects (Windows DLLs, etc.)
 *.dll
 *.so
 *.so.*
@@ -45,7 +72,7 @@ release
 *.hex
 *.bin
 
-# Debug files
+# Debug info
 *.dSYM/
 *.su
 *.idb
