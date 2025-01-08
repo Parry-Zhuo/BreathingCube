@@ -26,7 +26,7 @@ This project is a custom-designed **Meditation Timer**, combining hardware and s
 
 ## Power Supply Circuitry  
 
-The power supply begins with a **USB-C connector**, which delivers **5V, 3A**. This connects to a **Battery Management System (BMS)** that operates as follows:  
+The power supply begins with a **USB-C connector**, which delivers **5V, max(3A)**. This connects to a **Battery Management System (BMS)** that operates as follows:  
 
 1. **USB Plugged In**:  
    - The BMS disables the switch connecting the battery to the buck converter, isolating the battery.  
