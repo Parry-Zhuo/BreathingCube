@@ -72,15 +72,15 @@ PCD_HandleTypeDef hpcd_USB_FS;
 
 /* USER CODE BEGIN PV */
 int count = 0;
-// icm_20948_data _ICM_data;
+icm_20948_data _ICM_data;
 
 
-// uint32_t DestAddress = (uint32_t) &(TIM16->CCR1);
-// //uint32_t TIM16_Ticks = TIM1CLK / (NS * F_CYCLE);
-// pixel leds[_numOfLed];  // Define an array with 8 indices
-// rgb_color rgb = {255,255,255};
-// char displayStr[20];
-// uint8_t _currentMode = MODE_INITIALIZE;
+uint32_t DestAddress = (uint32_t) &(TIM16->CCR1);
+//uint32_t TIM16_Ticks = TIM1CLK / (NS * F_CYCLE);
+pixel leds[_numOfLed];  // Define an array with 8 indices
+rgb_color rgb = {255,255,255};
+char displayStr[20];
+uint8_t _currentMode = MODE_INITIALIZE;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -170,26 +170,26 @@ int main(void)
   // LP5812_Init_Manual();
 
   //initializeAuto
-//   LP5812_Init_Autonomous();
-//   AEU_SET_AllWhite();
-//   HAL_StatusTypeDef status;
-//     status = LP5812_WriteRegister(Update_CMD_REG,Update_CMD_Value);
-//   if (status != HAL_OK) {
-//     // Handle error
-//   }
-//   status = LP5812_WriteRegister(Start_CMD_REG,Start_CMD_Value);
-//   if (status != HAL_OK) {
-//     // Handle error
-// }
+  LP5812_Init_Autonomous();
+  AEU_SET_AllWhite();
+  HAL_StatusTypeDef status;
+    status = LP5812_WriteRegister(Update_CMD_REG,Update_CMD_Value);
+  if (status != HAL_OK) {
+    // Handle error
+  }
+  status = LP5812_WriteRegister(Start_CMD_REG,Start_CMD_Value);
+  if (status != HAL_OK) {
+    // Handle error
+}
 
-  // ICM20948_Init();
+  ICM20948_Init();
  
-  // LP5812_DetectFault();
+  LP5812_DetectFault();
 
-  // LP5812_ClearFaults();
+  LP5812_ClearFaults();
 
-  // LP5812_DetectFault();
-  // HAL_GPIO_WritePin(GPIOA, Indication_light_Pin, GPIO_PIN_RESET);
+  LP5812_DetectFault();
+  HAL_GPIO_WritePin(GPIOA, Indication_light_Pin, GPIO_PIN_RESET);
 
   /*Attempt at assigning this very long variable list
 	 *
@@ -206,7 +206,7 @@ int main(void)
 //  }
 //  HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds, _numOfWLedBits);
 //
-//	RTC_initialize(1,MODE_INITIALIZE);
+	RTC_initialize(1,MODE_INITIALIZE);
 
 //	setAllLed(leds,rgb,1);
 
@@ -238,14 +238,14 @@ int main(void)
   // fadeAlternatingColours_manual();
 
     /*RTC STUFF
-//	_currentMode = getMode();
-//	RTC_TimeTypeDef currentTime = update();
+	_currentMode = getMode();
+	RTC_TimeTypeDef currentTime = update();
 	*/
 
     // HAL_Delay(500);
 
-    // ICM20948_ReadAccel(&_ICM_data);
-    // ICM20948_ReadGyro(&_ICM_data);
+    ICM20948_ReadAccel(&_ICM_data);
+    ICM20948_ReadGyro(&_ICM_data);
     // int i = 0;
 //    count++;
 //	data = 0xff; //test logic analyzer
@@ -939,61 +939,61 @@ void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim){
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	//Start/stop button
-// 	if(GPIO_Pin == BUTTON_1_Pin){
+	if(GPIO_Pin == BUTTON_1_Pin){
 
-// 		//if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET) {
-// //		HAL_GPIO_TogglePin(Indication_light_GPIO_Port, Indication_light_Pin);
-// //		HAL_GPIO_WritePin(Indication_light_GPIO_Port, Indication_light_Pin,GPIO_PIN_SET);
-// 		//}
-// 		__HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_0);
-// 		startstop();
+		//if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_0) == GPIO_PIN_SET) {
+//		HAL_GPIO_TogglePin(Indication_light_GPIO_Port, Indication_light_Pin);
+//		HAL_GPIO_WritePin(Indication_light_GPIO_Port, Indication_light_Pin,GPIO_PIN_SET);
+		//}
+		__HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_0);
+		startstop();
 
-// 	//Increment minutes button
-// 	}else if(GPIO_Pin == BUTTON_2_Pin){
-// 		/*PA6 - addressable LED Timer 16 CH1*/
+	//Increment minutes button
+	}else if(GPIO_Pin == BUTTON_2_Pin){
+		/*PA6 - addressable LED Timer 16 CH1*/
 
-// 		setAllLed(leds,rgb,1);
-//         if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
-//         {
-//             Error_Handler();
-//         }
-//     //Increment seconds button
-// 	}else if(GPIO_Pin == BUTTON_3_Pin){
-// 		resetAllLed(leds);
-//         if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
-//         {
-//             Error_Handler();
-//         }
-//     //Debug button
-// 	}else if(GPIO_Pin == BUTTON_4_Pin){//increments LED.
-// 		static int _currLedNum = 0;
-// 		//resetAllLed(leds);
-// 		setSinglePixels(leds,rgb,_currLedNum);
-// 		_currLedNum = (_currLedNum + 1)%_numOfLed;
-//         if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
-//         {
-//             Error_Handler();
-//         }
-// 	}else{
-// 		HAL_GPIO_WritePin(Indication_light_GPIO_Port, Indication_light_Pin,GPIO_PIN_RESET);
+		setAllLed(leds,rgb,1);
+        if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
+        {
+            Error_Handler();
+        }
+    //Increment seconds button
+	}else if(GPIO_Pin == BUTTON_3_Pin){
+		resetAllLed(leds);
+        if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
+        {
+            Error_Handler();
+        }
+    //Debug button
+	}else if(GPIO_Pin == BUTTON_4_Pin){//increments LED.
+		static int _currLedNum = 0;
+		//resetAllLed(leds);
+		setSinglePixels(leds,rgb,_currLedNum);
+		_currLedNum = (_currLedNum + 1)%_numOfLed;
+        if (HAL_TIM_PWM_Start_DMA(&htim16, TIM_CHANNEL_1, (uint32_t *)leds,_numOfWLedBits) != HAL_OK)
+        {
+            Error_Handler();
+        }
+	}else{
+		HAL_GPIO_WritePin(Indication_light_GPIO_Port, Indication_light_Pin,GPIO_PIN_RESET);
 
-// 	}
+	}
 }
 
 void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc) {
 //	HAL_GPIO_TogglePin(Indication_light_GPIO_Port, Indication_light_Pin);
 
 //Here we actually focus on the LED driver.
-//	HAL_Delay(500); // 500 ms delay
-//	RTC_AlarmTypeDef sAlarm;
-//	HAL_RTC_GetAlarm(hrtc,&sAlarm,RTC_ALARM_A,FORMAT_BIN);
-//	if(sAlarm.AlarmTime.Seconds>58) {
-//		sAlarm.AlarmTime.Seconds=0;
-//	}else{
-//		sAlarm.AlarmTime.Seconds=sAlarm.AlarmTime.Seconds+1;
-//	}
-//    while(HAL_RTC_SetAlarm_IT(hrtc, &sAlarm, FORMAT_BIN)!=HAL_OK){}
-    //HAL_GPIO_TogglePin(Indication_light_GPIO_Port, Indication_light_Pin);
+	HAL_Delay(500); // 500 ms delay
+	RTC_AlarmTypeDef sAlarm;
+	HAL_RTC_GetAlarm(hrtc,&sAlarm,RTC_ALARM_A,FORMAT_BIN);
+	if(sAlarm.AlarmTime.Seconds>58) {
+		sAlarm.AlarmTime.Seconds=0;
+	}else{
+		sAlarm.AlarmTime.Seconds=sAlarm.AlarmTime.Seconds+1;
+	}
+   while(HAL_RTC_SetAlarm_IT(hrtc, &sAlarm, FORMAT_BIN)!=HAL_OK){}
+    HAL_GPIO_TogglePin(Indication_light_GPIO_Port, Indication_light_Pin);
 }
 /* USER CODE END 4 */
 
