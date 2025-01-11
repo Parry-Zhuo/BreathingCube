@@ -8,13 +8,6 @@ This project is a custom-designed **Meditation Timer**, combining hardware and s
 - Developed basic **power circuitry** capable of operating up to 40 hours on a 3.3V supply.
 - Designed a layout to support **I²C communication**, interfacing with peripherals such as gyroscopes, and led drivers.
 
-## Software Features
-- Dual operational modes:
-  - **Using Mode**: LED-based breathing animation for meditation guidance to create an ambient environment
-  - **Configuration Mode**: Gyroscope-controlled mode with capacitive touch sensors to configure settings
-    - **Bluetooth connectivity**: Capable of more indepth configuration through BLE, that connects with phone
-    - Programmed addressable **RGBW LEDs** for dynamic visual feedback.
-
 ## Design Aesthetics
 - Enclosed the electronics in a **6 cm³ plexiglass box**, offering a sleek design with beautifully diffused lighting effects.
 
