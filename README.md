@@ -42,7 +42,8 @@ The output from the switch is fed into a **buck converter**, which steps down th
 
 ![image](https://github.com/user-attachments/assets/8fb4866a-da87-413b-a81c-4ff51392bc81)
 
+The LP5812 LED drivers enable smooth, energy-efficient animations by offloading the sequence execution, allowing the MCU to remain in low-power mode while the LED animation continues
 
 ![image](https://github.com/user-attachments/assets/345f035e-eceb-47a0-839d-9cabec9d8e98)
-The LP5812 LED drivers enable smooth, energy-efficient animations by offloading the sequence execution, allowing the MCU to remain in low-power mode.
+
 
