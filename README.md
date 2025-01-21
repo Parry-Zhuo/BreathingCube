@@ -5,7 +5,7 @@ This project is a custom-designed **Meditation Timer**, combining hardware and s
 ## Hardware Highlights
 - Designed and manufactured a **4-layer PCB** with a stack-up of Signal-GND-PWR-Signal with an **STM32 microcontroller**.
 - Collaborated with a PCB manufacturer to ensure production quality and specifications.
-- Developed basic **power circuitry** capable of operating up to 40 hours on a 3.3V supply.
+- Designed and implemented a power management system with a **BMS** for USB and **battery power switching**, ensuring efficient charging and reliable 3.3V regulation via a **buck converter**.
 - Designed a layout to support **I²C communication**, interfacing with peripherals such as gyroscopes, and led drivers.
 - The LP5812 LED drivers enable smooth, energy-efficient animations by offloading the sequence execution, allowing the MCU to remain in low-power mode while the LED animation continues
 ## Design Aesthetics
