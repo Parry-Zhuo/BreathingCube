@@ -1,3 +1,8 @@
+ 
+![IMG_2317](https://github.com/user-attachments/assets/3612826b-7e8f-4b12-94fe-f2078112d438)
+
+![IMG_2303](https://github.com/user-attachments/assets/ed096eaa-f72a-443a-a6af-a6ebdccd8727)
+![IMG_2304](https://github.com/user-attachments/assets/ef337fea-2e1e-4785-ae30-d657dc8a0cd5)
 # Meditation Timer  
 
 This project is a custom-designed **Meditation Timer**, combining hardware and software to create a device meant to help users build and maintain the habit of meditation.  
@@ -10,12 +15,6 @@ This project is a custom-designed **Meditation Timer**, combining hardware and s
 - The LP5812 LED drivers enable smooth, energy-efficient animations by offloading the sequence execution, allowing the MCU to remain in low-power mode while the LED animation continues
 ## Design Aesthetics
 - Enclosed the electronics in a **6 cm³ plexiglass box**, offering a sleek design with beautifully diffused lighting effects.
-
- 
-![IMG_2317](https://github.com/user-attachments/assets/3612826b-7e8f-4b12-94fe-f2078112d438)
-
-![IMG_2303](https://github.com/user-attachments/assets/ed096eaa-f72a-443a-a6af-a6ebdccd8727)
-![IMG_2304](https://github.com/user-attachments/assets/ef337fea-2e1e-4785-ae30-d657dc8a0cd5)
 
 ## Power Supply Circuitry  
 
