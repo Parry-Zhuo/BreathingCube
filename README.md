@@ -1,8 +1,5 @@
  
 ![IMG_2317](https://github.com/user-attachments/assets/3612826b-7e8f-4b12-94fe-f2078112d438)
-
-![IMG_2303](https://github.com/user-attachments/assets/ed096eaa-f72a-443a-a6af-a6ebdccd8727)
-![IMG_2304](https://github.com/user-attachments/assets/ef337fea-2e1e-4785-ae30-d657dc8a0cd5)
 # Meditation Timer  
 
 This project is a custom-designed **Meditation Timer**, combining hardware and software to create a device meant to help users build and maintain the habit of meditation.  
@@ -28,6 +25,9 @@ The power supply begins with a **USB-C connector**, which delivers **5V, max(3A)
    - The BMS enables the switch, allowing the battery to power the circuit.  
 
 The output from the switch is fed into a **buck converter**, which steps down the input voltage to **3.3V** to power the entire circuit.
+![IMG_2303](https://github.com/user-attachments/assets/ed096eaa-f72a-443a-a6af-a6ebdccd8727)
+![IMG_2304](https://github.com/user-attachments/assets/ef337fea-2e1e-4785-ae30-d657dc8a0cd5)
+
 
 ![image](https://github.com/user-attachments/assets/ca5db52f-fed1-4477-909a-20fd2df3d5e0)
 
