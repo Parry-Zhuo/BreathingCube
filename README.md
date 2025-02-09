@@ -10,8 +10,18 @@ This project is a custom-designed **Meditation Timer**, combining hardware and s
 - Designed and implemented a power management system with a **BMS** for USB and **battery power switching**, ensuring efficient charging and reliable 3.3V regulation via a **buck converter**.
 - Designed a layout to support **I²C communication**, interfacing with peripherals such as gyroscopes, and led drivers.
 - The LP5812 LED drivers enable smooth, energy-efficient animations by offloading the sequence execution, allowing the MCU to remain in low-power mode while the LED animation continues
+
+## Firmware Highlights
+ - I²C Communication → Interfaced with gyroscopes and LED drivers to support motion-based mode selection.
+ - Button Inputs → Capacitive touch buttons detect user interaction for starting, stopping, or adjusting meditation sessions.
+ - Real-Time Clock (RTC) for Timing: Used RTC to track session duration and manage accurate timing without keeping the MCU fully active.
+ - State Management & Interrupt Handling: Efficient use of interrupts and timers to manage user inputs, LED animations, and BLE interactions without unnecessary CPU usage.
+ - Energy-Efficient Operation: Implemented low-power sleep modes for the STM32WB55, ensuring minimal energy consumption while maintaining BLE connectivity.
+ - Bluetooth Low Energy (BLE) Communication: Enabled wireless configuration and control via BLE, allowing users to customize meditation settings.
+ - Used DMA and Interrupts to control WS2812B led's in previous prototypes of product
+
 ## Design Aesthetics
-- Enclosed the electronics in a **6 cm³ plexiglass box**, offering a sleek design with beautifully diffused lighting effects.
+- Enclosed the electronics in a **6 cm³ polycarbonate box**, offering a sleek design with beautifully diffused lighting effects.
 
 ## Power Supply Circuitry  
 
