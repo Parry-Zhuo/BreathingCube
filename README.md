@@ -1,6 +1,6 @@
  
 ![IMG_2317](https://github.com/user-attachments/assets/3612826b-7e8f-4b12-94fe-f2078112d438)
-# Meditation Timer  
+# Breathing cube  
 
 This project is a custom-designed **Meditation Timer**, combining hardware and software to create a device meant to help users build and maintain the habit of meditation.  
 
