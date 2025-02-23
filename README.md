@@ -38,6 +38,7 @@ The output from the switch is fed into a **buck converter**, which steps down th
 ![IMG_2303](https://github.com/user-attachments/assets/ed096eaa-f72a-443a-a6af-a6ebdccd8727)
 ![IMG_2304](https://github.com/user-attachments/assets/ef337fea-2e1e-4785-ae30-d657dc8a0cd5)
 
+![image](https://github.com/user-attachments/assets/ba8afc21-cb9b-4e06-9099-e2f29564439e)
 
 ![image](https://github.com/user-attachments/assets/ca5db52f-fed1-4477-909a-20fd2df3d5e0)
 
