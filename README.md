@@ -16,7 +16,6 @@ This project is a custom-designed **Meditation Timer**, combining hardware and s
  - Button Inputs → Capacitive touch buttons detect user interaction for starting, stopping, or adjusting meditation sessions.
  - Real-Time Clock (RTC) for Timing: Used RTC to track session duration and manage accurate timing without keeping the MCU fully active.
  - State Management & Interrupt Handling: Efficient use of interrupts and timers to manage user inputs, LED animations, and BLE interactions without unnecessary CPU usage.
- - Energy-Efficient Operation: Implemented low-power sleep modes for the STM32WB55, ensuring minimal energy consumption while maintaining BLE connectivity.
  - Bluetooth Low Energy (BLE) Communication: Enabled wireless configuration and control via BLE, allowing users to customize meditation settings.
  - Used DMA and Interrupts to control WS2812B led's in previous prototypes of product
 
