@@ -4,7 +4,7 @@
 The breathing cube is a BLE controlled STM32 device that controls LED's for users to provide breathing patterns to follow while creating an ambient, relaxing environment.
 
 ## Hardware Highlights
-- Designed and manufactured a **4-layer PCB** with a stack-up of Signal-GND-PWR-Signal with an **STM32** with **50 Ohm impedance matching** for the Antenna
+- Designed and manufactured a **4-layer PCB** with a stack-up of Signal-GND-PWR-Signal with an **STM32** alongside **50 Ohm impedance matching** for the Antenna
 - Designed a layout to support **I²C communication**, interfacing with peripherals such as gyroscopes, and led drivers.
 - Designed and implemented a basic BMS for USB and battery power switching, ensuring efficient charging and reliable 3.3V regulation via a **buck converter**.
 
