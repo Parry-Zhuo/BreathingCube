@@ -1,5 +1,11 @@
  # Breathing cube( Revision 1)  
-The breathing cube is a BLE controlled STM32 device that controls LED's for users to provide breathing patterns to follow while creating an ambient, relaxing environment.
+In today’s digital world, attention is constantly fragmented. Smartphones, notifications, social media feeds, and endless scrolling compete for our focus every minute of the day. The result is chronic distraction, diminished deep focus, and elevated stress levels.
+
+Now imagine being able to step away from that noise, even for a few minutes, and reconnect with your breath.
+
+The BreathingCube is an IoT-enabled device designed to help individuals integrate meditation into busy daily life. Through guided ambient lighting patterns and subtle sound cues, it encourages intentional breathing and mindfulness practice, helping calm the nervous system and restore a sense of presence.
+
+REVISION 2 IS CURRENTLY IN PROGRESS - https://github.com/BrycesDevices/7855_202610_03
 
 ![IMG_2317](https://github.com/user-attachments/assets/3612826b-7e8f-4b12-94fe-f2078112d438)
 
