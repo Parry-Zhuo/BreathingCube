@@ -5,7 +5,9 @@ Now imagine being able to step away from that noise, even for a few minutes, and
 
 The BreathingCube is an IoT-enabled device designed to help individuals integrate meditation into busy daily life. Through guided ambient lighting patterns and subtle sound cues, it encourages intentional breathing and mindfulness practice, helping calm the nervous system and restore a sense of presence.
 
-REVISION 2 IS CURRENTLY IN PROGRESS - https://github.com/BrycesDevices/7855_202610_03
+REVISION 2 IS CURRENTLY IN PROGRESS - 
+HARDWARE: https://github.com/Parry-Zhuo/BreathingCubeV2
+SOFTWARE/FIRMWARE: https://github.com/BrycesDevices/7855_202610_03
 
 ![IMG_2317](https://github.com/user-attachments/assets/3612826b-7e8f-4b12-94fe-f2078112d438)
 
