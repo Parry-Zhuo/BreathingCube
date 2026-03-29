@@ -7,7 +7,7 @@ The BreathingCube is an IoT-enabled device designed to help individuals integrat
 
 REVISION 2 IS CURRENTLY IN PROGRESS - 
 
-HARDWARE: https://github.com/Parry-Zhuo/BreathingCubeV2
+HARDWARE: https://github.com/BreathingCUBE/BreathingCUBE_hardware
 
 SOFTWARE/FIRMWARE: https://github.com/BrycesDevices/7855_202610_03
 
